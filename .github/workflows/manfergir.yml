@@ -1,0 +1,25 @@
+name: manfergir
+
+on:
+  issues:
+    types: [opened]
+  project_card:
+    types: [moved]
+  workflow_dispatch:
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enviar mensaje a la consola
+        run: echo "Un issue ha sido creado o una tarjeta del proyecto ha sido movida."
+
+      - name: Mostrar contexto del evento
+        run: echo "${{ toJSON(github.event) }}"
+
+      - name: Enviar notificación (acción del marketplace) a un server de Discord
+        uses: rjstone/discord-webhook-notify@v1
+        with:
+          webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+          msg: "¡Evento capturado por el flujo manfergir en el repositorio personal!"
+
